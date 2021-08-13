@@ -5,6 +5,7 @@
 Scene::Scene(std::vector<InitializerFunc> initializers)
     : m_segments()
     , m_currentSegment(0)
+    , m_currentSegmentStartTime(sf::Time::Zero)
 {
     // With default constructors..
     m_segments.resize(initializers.size());
@@ -14,11 +15,15 @@ Scene::Scene(std::vector<InitializerFunc> initializers)
     }
 }
 
-bool Scene::advance()
+bool Scene::advance(const sf::Time& currentTime)
 {
-    if (hasNext()) {
-        ++m_currentSegment;
+    if (!hasNext()) {
+        return false;
     }
+
+    ++m_currentSegment;
+    m_currentSegmentStartTime = currentTime;
+    return true;
 }
 
 void Scene::update(const sf::Time& elapsed)
@@ -28,11 +33,11 @@ void Scene::update(const sf::Time& elapsed)
     }
 
     for (auto& animation : m_segments[m_currentSegment].animations) {
-        animation.update(elapsed);
+        animation.update(elapsed - m_currentSegmentStartTime);
     }
 
     if (hasNext() && m_segments[m_currentSegment + 1].should_autoplay && hasCurrentSegmentEnded()) {
-        advance();
+        advance(elapsed);
     }
 }
 

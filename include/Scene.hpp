@@ -25,6 +25,7 @@ public:
 private:
     std::vector<Segment> m_segments;
     unsigned m_currentSegment;
+    sf::Time m_currentSegmentStartTime;
 
     /**
      * Check if all the animations in the current segment have ended.
@@ -48,8 +49,9 @@ public:
     /**
      * Trigger the next segment. 
      * Returnes false if there is no next segment.
+     * :param currentTime: The time at the moment of advancement (for relative timestamps)
      **/
-    bool advance();
+    bool advance(const sf::Time& currentTime);
 
     /**
      * Update the scene with the time passed since the last frame.
