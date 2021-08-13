@@ -66,7 +66,7 @@ int main()
         // matrix.setPosition(window.getView().getCenter());
         // window.draw(matrix);
         
-        g_scenes.at(0).update(deltaTime);
+        g_scenes.at(0).update(elapsed);
         window.draw(g_scenes.at(0));
         window.display();
     }

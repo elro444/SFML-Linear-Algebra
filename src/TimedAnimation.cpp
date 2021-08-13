@@ -1,5 +1,7 @@
 #include "TimedAnimation.hpp"
 
+#include "Util.h"
+
 TimedAnimation::TimedAnimation(const sf::Time& duration, UpdateCallback callback, jbcoe::polymorphic_value<Pacer> pacer)
     : m_duration(duration)
     , m_elapsed()
@@ -8,9 +10,9 @@ TimedAnimation::TimedAnimation(const sf::Time& duration, UpdateCallback callback
 {   
 }
 
-void TimedAnimation::update(const sf::Time& deltaTime)
+void TimedAnimation::update(const sf::Time& elapsed)
 {
-    m_elapsed += deltaTime;
+    m_elapsed = util::clamp(elapsed, sf::Time::Zero, m_duration);
     float percentage = m_elapsed / m_duration;
     m_callback(m_pacer->get(percentage));
 }

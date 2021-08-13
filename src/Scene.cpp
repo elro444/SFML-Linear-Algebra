@@ -21,14 +21,14 @@ bool Scene::advance()
     }
 }
 
-void Scene::update(const sf::Time& deltaTime)
+void Scene::update(const sf::Time& elapsed)
 {
     if (m_currentSegment >= m_segments.size()) {
         return;
     }
 
     for (auto& animation : m_segments[m_currentSegment].animations) {
-        animation.update(deltaTime);
+        animation.update(elapsed);
     }
 
     if (hasNext() && m_segments[m_currentSegment + 1].should_autoplay && hasCurrentSegmentEnded()) {
