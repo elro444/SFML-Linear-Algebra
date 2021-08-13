@@ -21,3 +21,8 @@ bool TimedAnimation::hasEnded() const
 {
     return m_elapsed >= m_duration;
 }
+
+sf::Time TimedAnimation::getDuration() const
+{
+    return m_duration;
+}

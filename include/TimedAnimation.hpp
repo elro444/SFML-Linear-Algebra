@@ -27,4 +27,5 @@ public:
     /* Life cycle of the interpolation */
     void update(const sf::Time& deltaTime);
     bool hasEnded() const;
+    sf::Time getDuration() const;
 };

@@ -20,8 +20,10 @@ public:
         Elements elements;
         Animations animations;
         bool should_autoplay = false;
+        sf::Time getDuration() const; // Returns the duration of the longest animation.
     };
     using InitializerFunc = std::function<void(Segment&)>;
+
 private:
     std::vector<Segment> m_segments;
     unsigned m_currentSegment;

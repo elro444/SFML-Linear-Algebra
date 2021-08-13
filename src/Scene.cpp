@@ -65,3 +65,11 @@ bool Scene::hasNext() const
 {
     return m_currentSegment + 1 < m_segments.size();
 }
+
+sf::Time Scene::Segment::getDuration() const
+{
+    auto compByDuration = [](const auto& a, const auto& b) {
+        return a.getDuration() < b.getDuration();
+    };
+    return std::max_element(animations.begin(), animations.end(), compByDuration)->getDuration();
+}
