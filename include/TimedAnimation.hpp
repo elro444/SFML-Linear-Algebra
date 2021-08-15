@@ -25,7 +25,7 @@ public:
     TimedAnimation(const sf::Time& duration, UpdateCallback callback, jbcoe::polymorphic_value<Pacer> pacer);
 
     /* Life cycle of the interpolation */
-    void update(const sf::Time& deltaTime);
+    void update(const sf::Time& elapsed);
     bool hasEnded() const;
     sf::Time getDuration() const;
 };
