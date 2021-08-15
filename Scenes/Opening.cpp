@@ -6,6 +6,7 @@
 #include "ThickArrow.hpp"
 #include "Grid.hpp"
 #include "DrawableMatrix.hpp"
+#include "TimedAnimationVariants.hpp"
 
 sf::Font g_mathFont;
 const std::string CDOT = "⋅";
@@ -23,16 +24,19 @@ bool segment1(Scene::Segment& segment)
     MAKE_INTERPOLATION_FUNC(sf::Vector2f, tailPos, (300, 500), (300, 300), CALL_SETTER(arrow, setTailPos));
     MAKE_INTERPOLATION_FUNC(sf::Vector3f, color, (0, 0, 255), (0, 255, 0), [arrow](auto x){arrow->setColor(sf::Color(x.x, x.y, x.z));});
 
-    sf::Time duration(sf::seconds(3));
+    sf::Time duration(sf::seconds(0.5));
     jbcoe::polymorphic_value<Pacer> sigmoid(new SigmoidPacer());
     jbcoe::polymorphic_value<Pacer> linear(new LinearPacer());
 
-    segment.animations.push_back(TimedAnimation(duration, headPos_interpolator, sigmoid));
-    segment.animations.push_back(TimedAnimation(duration, tailPos_interpolator, sigmoid));
-    segment.animations.push_back(TimedAnimation(duration, color_interpolator, sigmoid));
-    segment.elements.push_back(grid);
+    segment.animations.push_back(TimedAnimation(3.f * duration, color_interpolator, linear));
+    segment.animations.push_back(
+        Chain(Scene::Animations{
+            TimedAnimation(duration, headPos_interpolator, sigmoid),
+            Delay(duration),
+            TimedAnimation(duration, tailPos_interpolator, sigmoid)
+        })
+    );
     segment.elements.push_back(arrow);
-    
 }
 
 static bool makeScene()
